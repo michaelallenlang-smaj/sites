@@ -1,0 +1,2 @@
+# sites
+static websites
