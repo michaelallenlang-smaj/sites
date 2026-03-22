@@ -1,0 +1,195 @@
+{
+  "tournament": "2026 NCAA Division I Men's Basketball Championship",
+  "scoring": {"R64": 1, "R32": 2, "S16": 4, "E8": 8, "F4": 16, "Championship": 32},
+  "bracket_structure": {
+    "east": {
+      "R64": [
+        {"seed": [1,16], "teams": ["Duke", "Siena"]},
+        {"seed": [8,9], "teams": ["Ohio St", "TCU"]},
+        {"seed": [5,12], "teams": ["St. John's", "Northern Iowa"]},
+        {"seed": [4,13], "teams": ["Kansas", "Cal Baptist"]},
+        {"seed": [6,11], "teams": ["Louisville", "South Florida"]},
+        {"seed": [3,14], "teams": ["Michigan St", "North Dakota St"]},
+        {"seed": [7,10], "teams": ["UCLA", "UCF"]},
+        {"seed": [2,15], "teams": ["UConn", "Furman"]}
+      ]
+    },
+    "south": {
+      "R64": [
+        {"seed": [1,16], "teams": ["Florida", "Lehigh/PVAMU"]},
+        {"seed": [8,9], "teams": ["Clemson", "Iowa"]},
+        {"seed": [5,12], "teams": ["Vanderbilt", "McNeese"]},
+        {"seed": [4,13], "teams": ["Nebraska", "Troy"]},
+        {"seed": [6,11], "teams": ["North Carolina", "VCU"]},
+        {"seed": [3,14], "teams": ["Illinois", "Penn"]},
+        {"seed": [7,10], "teams": ["Saint Mary's", "Texas A&M"]},
+        {"seed": [2,15], "teams": ["Houston", "Idaho"]}
+      ]
+    },
+    "west": {
+      "R64": [
+        {"seed": [1,16], "teams": ["Arizona", "Long Island"]},
+        {"seed": [8,9], "teams": ["Villanova", "Utah St"]},
+        {"seed": [5,12], "teams": ["Wisconsin", "High Point"]},
+        {"seed": [4,13], "teams": ["Arkansas", "Hawaii"]},
+        {"seed": [6,11], "teams": ["BYU", "NC State/Texas"]},
+        {"seed": [3,14], "teams": ["Gonzaga", "Kennesaw St"]},
+        {"seed": [7,10], "teams": ["Miami", "Missouri"]},
+        {"seed": [2,15], "teams": ["Purdue", "Queens"]}
+      ]
+    },
+    "midwest": {
+      "R64": [
+        {"seed": [1,16], "teams": ["Michigan", "Howard/UMBC"]},
+        {"seed": [8,9], "teams": ["Georgia", "Saint Louis"]},
+        {"seed": [5,12], "teams": ["Texas Tech", "Akron"]},
+        {"seed": [4,13], "teams": ["Alabama", "Hofstra"]},
+        {"seed": [6,11], "teams": ["Tennessee", "SMU/MIA OH"]},
+        {"seed": [3,14], "teams": ["Virginia", "Wright St"]},
+        {"seed": [7,10], "teams": ["Kentucky", "Santa Clara"]},
+        {"seed": [2,15], "teams": ["Iowa St", "Tennessee St"]}
+      ]
+    }
+  },
+  "picks": {
+    "Mom": {
+      "east": {
+        "R64": ["Duke", "TCU", "Northern Iowa", "Kansas", "South Florida", "North Dakota St", "UCLA", "UConn"],
+        "R32": ["Duke", "Kansas", "North Dakota St", "UConn"],
+        "S16": ["Duke", "UConn"],
+        "E8": ["UConn"]
+      },
+      "south": {
+        "R64": ["Florida", "Clemson", "Vanderbilt", "Nebraska", "North Carolina", "Penn", "Saint Mary's", "Idaho"],
+        "R32": ["Clemson", "Nebraska", "Penn", "Idaho"],
+        "S16": ["Nebraska", "Idaho"],
+        "E8": ["Nebraska"]
+      },
+      "west": {
+        "R64": ["Arizona", "Utah St", "Wisconsin", "Arkansas", "NC State", "Kennesaw St", "Missouri", "Queens"],
+        "R32": ["Arizona", "Arkansas", "NC State", "Missouri"],
+        "S16": ["Arizona", "Missouri"],
+        "E8": ["Missouri"]
+      },
+      "midwest": {
+        "R64": ["Michigan", "Georgia", "Akron", "Hofstra", "SMU", "Virginia", "Kentucky", "Tennessee St"],
+        "R32": ["Michigan", "Hofstra", "Virginia", "Tennessee St"],
+        "S16": ["Michigan", "Tennessee St"],
+        "E8": ["Tennessee St"]
+      },
+      "final_four": {
+        "semifinal_1": {"teams": ["UConn", "Nebraska"], "winner": "Nebraska"},
+        "semifinal_2": {"teams": ["Missouri", "Tennessee St"], "winner": "Missouri"},
+        "championship": {"teams": ["Nebraska", "Missouri"], "winner": "Missouri"}
+      }
+    },
+    "Max": {
+      "east": {
+        "R64": ["Duke", "TCU", "St. John's", "Kansas", "South Florida", "Michigan St", "UCF", "UConn"],
+        "R32": ["Duke", "Kansas", "Michigan St", "UConn"],
+        "S16": ["Duke", "Michigan St"],
+        "E8": ["Duke"]
+      },
+      "south": {
+        "R64": ["Florida", "Iowa", "McNeese", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
+        "R32": ["Florida", "Nebraska", "VCU", "Houston"],
+        "S16": ["Nebraska", "VCU"],
+        "E8": ["Nebraska"]
+      },
+      "west": {
+        "R64": ["Arizona", "Villanova", "High Point", "Arkansas", "BYU", "Gonzaga", "Miami", "Purdue"],
+        "R32": ["Arizona", "High Point", "Gonzaga", "Miami"],
+        "S16": ["Arizona", "Gonzaga"],
+        "E8": ["Arizona"]
+      },
+      "midwest": {
+        "R64": ["Michigan", "Saint Louis", "Akron", "Alabama", "MIA OH", "Virginia", "Santa Clara", "Iowa St"],
+        "R32": ["Michigan", "Akron", "MIA OH", "Iowa St"],
+        "S16": ["Michigan", "MIA OH"],
+        "E8": ["Michigan"]
+      },
+      "final_four": {
+        "semifinal_1": {"teams": ["Duke", "Nebraska"], "winner": "Nebraska"},
+        "semifinal_2": {"teams": ["Arizona", "Michigan"], "winner": "Arizona"},
+        "championship": {"teams": ["Nebraska", "Arizona"], "winner": "Nebraska"}
+      }
+    },
+    "Simon": {
+      "east": {
+        "R64": ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
+        "R32": ["Duke", "Kansas", "Michigan St", "UConn"],
+        "S16": ["Duke", "Michigan St"],
+        "E8": ["Michigan St"]
+      },
+      "south": {
+        "R64": ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Saint Mary's", "Houston"],
+        "R32": ["Florida", "Nebraska", "Illinois", "Houston"],
+        "S16": ["Nebraska", "Houston"],
+        "E8": ["Nebraska"]
+      },
+      "west": {
+        "R64": ["Arizona", "Villanova", "High Point", "Arkansas", "BYU", "Gonzaga", "Missouri", "Purdue"],
+        "R32": ["Arizona", "Arkansas", "Gonzaga", "Purdue"],
+        "S16": ["Arkansas", "Gonzaga"],
+        "E8": ["Arkansas"]
+      },
+      "midwest": {
+        "R64": ["Michigan", "Saint Louis", "Akron", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
+        "R32": ["Michigan", "Akron", "Virginia", "Iowa St"],
+        "S16": ["Michigan", "Iowa St"],
+        "E8": ["Michigan"]
+      },
+      "final_four": {
+        "semifinal_1": {"teams": ["Michigan St", "Nebraska"], "winner": "Michigan St"},
+        "semifinal_2": {"teams": ["Arkansas", "Michigan"], "winner": "Michigan"},
+        "championship": {"teams": ["Michigan St", "Michigan"], "winner": "Michigan"}
+      }
+    },
+    "Dad": {
+      "east": {
+        "R64": ["Duke", "Ohio St", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
+        "R32": ["Duke", "Kansas", "Michigan St", "UConn"],
+        "S16": ["Duke", "UConn"],
+        "E8": ["Duke"]
+      },
+      "south": {
+        "R64": ["Florida", "Clemson", "Vanderbilt", "Nebraska", "UNC", "Illinois", "Saint Mary's", "Houston"],
+        "R32": ["Florida", "Nebraska", "Illinois", "Houston"],
+        "S16": ["Florida", "Houston"],
+        "E8": ["Florida"]
+      },
+      "west": {
+        "R64": ["Arizona", "Villanova", "Wisconsin", "Arkansas", "BYU", "Gonzaga", "Miami", "Purdue"],
+        "R32": ["Arizona", "Arkansas", "Gonzaga", "Purdue"],
+        "S16": ["Arizona", "Gonzaga"],
+        "E8": ["Arizona"]
+      },
+      "midwest": {
+        "R64": ["Michigan", "Georgia", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
+        "R32": ["Michigan", "Alabama", "Virginia", "Iowa St"],
+        "S16": ["Michigan", "Iowa St"],
+        "E8": ["Michigan"]
+      },
+      "final_four": {
+        "semifinal_1": {"teams": ["Duke", "Florida"], "winner": "Duke"},
+        "semifinal_2": {"teams": ["Arizona", "Michigan"], "winner": "Michigan"},
+        "championship": {"teams": ["Duke", "Michigan"], "winner": "Duke"}
+      }
+    }
+  },
+  "actual_results": {
+    "east": {
+      "R64": ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"]
+    },
+    "south": {
+      "R64": ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"]
+    },
+    "west": {
+      "R64": ["Arizona", "Utah St", "High Point", "Arkansas", "Texas", "Gonzaga", "Miami", "Purdue"]
+    },
+    "midwest": {
+      "R64": ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"]
+    },
+    "notes": "R64 complete. R32 games March 21-22. Only 4 double-digit seeds won: High Point(12), VCU(11), Texas(11), Texas A&M(10). Play-in: Howard over UMBC, PVAMU over Lehigh, Texas over NC State, MIA OH over SMU."
+  }
+}
