@@ -23,13 +23,24 @@
   .leaderboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
   .player-card { background: linear-gradient(135deg, #162a42, #1e3a5f); border-radius: 12px; padding: 20px; border: 1px solid #2a4a6b; position: relative; overflow: hidden; }
   .player-card.leader { border-color: #f97316; }
-  .player-card.leader::before { content: '👑'; position: absolute; top: 8px; right: 12px; font-size: 20px; }
+  .player-rank { position: absolute; top: 12px; right: 14px; font-size: 28px; font-weight: 800; color: #2a4a6b; }
+  .player-card.leader .player-rank { color: #f97316; }
   .player-name { font-size: 20px; font-weight: 700; color: #fff; }
   .player-score { font-size: 42px; font-weight: 800; color: #f97316; margin: 8px 0; }
+  .player-score span { font-size: 14px; font-weight: 500; color: #64748b; }
+  .player-pct { font-size: 13px; color: #94a3b8; margin-bottom: 8px; }
+  .player-pct strong { color: #e0e6ed; }
   .player-max { font-size: 12px; color: #64748b; }
   .player-details { margin-top: 12px; font-size: 12px; color: #94a3b8; line-height: 1.8; }
-  .player-champion { margin-top: 8px; font-size: 13px; color: #64748b; }
-  .player-champion span { color: #facc15; font-weight: 600; }
+  .player-f4 { margin-top: 12px; font-size: 12px; color: #64748b; }
+  .player-f4 .f4-label { font-weight: 600; color: #94a3b8; margin-bottom: 4px; }
+  .f4-team { display: inline-block; padding: 2px 8px; border-radius: 4px; margin: 2px 2px; font-size: 11px; font-weight: 600; }
+  .f4-alive { background: #14532d; color: #4ade80; border: 1px solid #22c55e40; }
+  .f4-eliminated { background: #450a0a; color: #f87171; border: 1px solid #ef444440; text-decoration: line-through; }
+  .f4-champ { font-size: 13px; margin-top: 6px; color: #64748b; }
+  .f4-champ span { font-weight: 700; }
+  .f4-champ .alive { color: #4ade80; }
+  .f4-champ .eliminated { color: #f87171; text-decoration: line-through; }
 
   /* Results Entry */
   .results-section { background: #162a42; border-radius: 12px; padding: 24px; border: 1px solid #2a4a6b; }
@@ -314,30 +325,118 @@ function getTotalGamesEntered() {
   return count;
 }
 
+function getAliveTeams() {
+  // Returns the set of teams still alive in the tournament
+  const alive = new Set();
+  const rounds = ['R64','R32','S16','E8'];
+  for (const region of ['east','south','west','midwest']) {
+    // Find the latest round with results — those winners are alive
+    let latestWinners = null;
+    for (const round of rounds) {
+      const r = results[region][round] || [];
+      if (r.length > 0 && r.some(t => t !== null)) latestWinners = r.filter(t => t !== null);
+    }
+    if (latestWinners) latestWinners.forEach(t => alive.add(t));
+  }
+  // If we have Final Four results, narrow further
+  if (results.final_four.champion) {
+    alive.clear();
+    alive.add(results.final_four.champion);
+  } else if (results.final_four.semi1_winner || results.final_four.semi2_winner) {
+    // Only semifinal winners + teams that haven't played yet
+    if (results.final_four.semi1_winner) {
+      // The loser of semi1 is eliminated — we need to figure out who it was
+      const e8east = (results.east.E8 || [])[0];
+      const e8south = (results.south.E8 || [])[0];
+      if (e8east && e8east !== results.final_four.semi1_winner) alive.delete(e8east);
+      if (e8south && e8south !== results.final_four.semi1_winner) alive.delete(e8south);
+    }
+    if (results.final_four.semi2_winner) {
+      const e8west = (results.west.E8 || [])[0];
+      const e8midwest = (results.midwest.E8 || [])[0];
+      if (e8west && e8west !== results.final_four.semi2_winner) alive.delete(e8west);
+      if (e8midwest && e8midwest !== results.final_four.semi2_winner) alive.delete(e8midwest);
+    }
+  }
+  return alive;
+}
+
+function getPickAccuracy(name) {
+  const picks = BRACKET_DATA.picks[name];
+  let correct = 0, decided = 0;
+  for (const region of ['east','south','west','midwest']) {
+    for (const round of ['R64','R32','S16','E8']) {
+      const actual = results[region][round] || [];
+      const picked = picks[region][round] || [];
+      for (let i = 0; i < picked.length; i++) {
+        if (actual[i]) { decided++; if (picked[i] === actual[i]) correct++; }
+      }
+    }
+  }
+  if (results.final_four.semi1_winner) { decided++; if (picks.final_four.semi1.winner === results.final_four.semi1_winner) correct++; }
+  if (results.final_four.semi2_winner) { decided++; if (picks.final_four.semi2.winner === results.final_four.semi2_winner) correct++; }
+  if (results.final_four.champion) { decided++; if (picks.final_four.championship.winner === results.final_four.champion) correct++; }
+  return { correct, decided, pct: decided > 0 ? Math.round(correct / decided * 100) : 0 };
+}
+
+function getF4Picks(name) {
+  const picks = BRACKET_DATA.picks[name];
+  return {
+    east: picks.east.E8[0],
+    south: picks.south.E8[0],
+    west: picks.west.E8[0],
+    midwest: picks.midwest.E8[0],
+    champion: picks.final_four.championship.winner
+  };
+}
+
 function renderLeaderboard() {
   const panel = document.getElementById('leaderboard-panel');
   const players = ['Mom','Max','Simon','Dad'];
-  const scores = players.map(p => ({ name: p, ...scorePlayer(p), maxPossible: getMaxPossible(p), champion: BRACKET_DATA.picks[p].final_four.championship.winner }));
+  const aliveTeams = getAliveTeams();
+  const scores = players.map(p => ({
+    name: p,
+    ...scorePlayer(p),
+    maxPossible: getMaxPossible(p),
+    accuracy: getPickAccuracy(p),
+    f4: getF4Picks(p)
+  }));
   scores.sort((a,b) => b.total - a.total || b.maxPossible - a.maxPossible);
 
   const totalGames = getTotalGamesEntered();
   const maxGames = 63;
+  const rankLabels = ['1st','2nd','3rd','4th'];
 
-  let html = `<div style="margin-bottom:16px;color:#94a3b8;font-size:13px;">Games entered: <strong style="color:#f97316">${totalGames}</strong> / ${maxGames}</div>`;
+  let html = `<div style="margin-bottom:16px;color:#94a3b8;font-size:13px;">Games decided: <strong style="color:#f97316">${totalGames}</strong> / ${maxGames}</div>`;
   html += '<div class="leaderboard">';
 
   scores.forEach((s, i) => {
     const isLeader = i === 0 && s.total > 0;
+    const f4Teams = [
+      { label: 'E', team: s.f4.east },
+      { label: 'S', team: s.f4.south },
+      { label: 'W', team: s.f4.west },
+      { label: 'MW', team: s.f4.midwest }
+    ];
+    const champAlive = aliveTeams.has(s.f4.champion);
+    const champClass = champAlive ? 'alive' : 'eliminated';
+
     html += `
       <div class="player-card ${isLeader ? 'leader' : ''}">
+        <div class="player-rank">${rankLabels[i]}</div>
         <div class="player-name">${s.name}</div>
-        <div class="player-score">${s.total}</div>
+        <div class="player-score">${s.total} <span>pts</span></div>
+        <div class="player-pct"><strong>${s.accuracy.correct}</strong> / ${s.accuracy.decided} picks correct (<strong>${s.accuracy.pct}%</strong>)</div>
         <div class="player-max">Max possible: ${s.maxPossible} / 192</div>
         <div class="player-details">
           R64: ${s.breakdown.R64} &bull; R32: ${s.breakdown.R32} &bull; S16: ${s.breakdown.S16}<br>
           E8: ${s.breakdown.E8} &bull; F4: ${s.breakdown.F4} &bull; Champ: ${s.breakdown.Championship}
         </div>
-        <div class="player-champion">Champion: <span>${s.champion}</span></div>
+        <div class="player-f4">
+          <div class="f4-label">Final Four Picks</div>
+          ${f4Teams.map(t => `<span class="f4-team ${aliveTeams.has(t.team) ? 'f4-alive' : 'f4-eliminated'}">${t.team}</span>`).join('')}
+          <div class="f4-champ">Champion: <span class="${champClass}">${s.f4.champion}</span></div>
+        </div>
       </div>`;
   });
 
