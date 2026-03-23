@@ -87,6 +87,47 @@
 
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
+
+  /* Bracket View */
+  .bracket-controls { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+  .bracket-controls label { font-size: 13px; color: #94a3b8; font-weight: 600; margin-right: 4px; }
+  .bracket-player-btn { padding: 6px 14px; background: #0d2137; color: #94a3b8; border: 1px solid #2a4a6b; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+  .bracket-player-btn.active { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+  .bracket-player-btn.bp-actual { background: #f97316; color: #fff; border-color: #f97316; }
+
+  .bracket-wrap { overflow-x: auto; padding-bottom: 16px; }
+  .bracket { display: flex; align-items: stretch; gap: 0; min-width: fit-content; }
+  .bracket-round { display: flex; flex-direction: column; justify-content: center; min-width: 170px; position: relative; }
+  .bracket-round-label { text-align: center; font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; padding: 0 0 10px; }
+
+  .bracket-game { display: flex; flex-direction: column; justify-content: center; margin: 4px 0; position: relative; }
+  .bracket-slot { padding: 5px 10px; font-size: 12px; font-weight: 500; color: #94a3b8; background: #0d2137; border: 1px solid #2a4a6b; min-width: 150px; white-space: nowrap; cursor: default; display: flex; justify-content: space-between; align-items: center; }
+  .bracket-slot:first-child { border-radius: 4px 4px 0 0; border-bottom: 1px solid #1a3050; }
+  .bracket-slot:last-child { border-radius: 0 0 4px 4px; }
+  .bracket-slot.winner { background: #162a42; color: #fff; font-weight: 700; }
+  .bracket-slot.eliminated { color: #475569; }
+  .bracket-slot .seed { color: #64748b; font-size: 10px; margin-right: 6px; font-weight: 600; }
+  .bracket-slot .team-name { flex: 1; }
+  .bracket-slot .pick-indicators { display: flex; gap: 2px; margin-left: 8px; }
+  .pick-dot { width: 14px; height: 14px; border-radius: 3px; font-size: 8px; font-weight: 800; display: flex; align-items: center; justify-content: center; line-height: 1; }
+  .pick-dot.picked-correct { background: #166534; color: #4ade80; }
+  .pick-dot.picked-wrong { background: #7f1d1d; color: #f87171; }
+  .pick-dot.picked-pending { background: #1e3a5f; color: #94a3b8; }
+
+  /* Bracket connector lines */
+  .bracket-round .bracket-game { position: relative; }
+  .bracket-connector { position: absolute; right: -1px; top: 0; bottom: 0; width: 16px; pointer-events: none; }
+  .bracket-connector::before { content: ''; position: absolute; right: 0; top: 25%; bottom: 25%; border-right: 2px solid #2a4a6b; }
+  .bracket-connector::after { content: ''; position: absolute; right: 0; top: 50%; width: 16px; border-top: 2px solid #2a4a6b; }
+
+  .bracket-spacer { flex: 1; }
+
+  /* Final Four bracket specific */
+  .ff-bracket { display: flex; align-items: center; justify-content: center; gap: 0; }
+  .ff-round { display: flex; flex-direction: column; justify-content: center; min-width: 170px; }
+  .ff-champion { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 180px; padding: 0 24px; }
+  .ff-champion .trophy { font-size: 36px; margin-bottom: 8px; }
+  .ff-champion .bracket-slot { border-radius: 4px; border: 2px solid #f97316; background: #1a2e10; min-width: 160px; }
 </style>
 </head>
 <body>
@@ -98,12 +139,14 @@
 
 <div class="tabs">
   <button class="tab active" onclick="showTab('leaderboard')">Leaderboard</button>
+  <button class="tab" onclick="showTab('bracket')">Bracket</button>
   <button class="tab" onclick="showTab('results')">Enter Results</button>
   <button class="tab" onclick="showTab('picks')">Compare Picks</button>
 </div>
 
 <div class="content">
   <div id="leaderboard-panel" class="tab-panel active"></div>
+  <div id="bracket-panel" class="tab-panel"></div>
   <div id="results-panel" class="tab-panel"></div>
   <div id="picks-panel" class="tab-panel"></div>
 </div>
@@ -663,6 +706,298 @@ function importResults() {
   input.click();
 }
 
+// ── Bracket View ──
+
+let bracketRegion = 'east';
+let bracketPlayer = null; // null = show all pick dots, or a player name to highlight
+
+function setBracketRegion(r) {
+  bracketRegion = r;
+  renderBracket();
+}
+
+function setBracketPlayer(p) {
+  bracketPlayer = bracketPlayer === p ? null : p;
+  renderBracket();
+}
+
+function getRegionBracketData(region) {
+  const struct = BRACKET_DATA.structure[region];
+  const rounds = ['R64','R32','S16','E8'];
+  const roundData = {};
+
+  for (const round of rounds) {
+    const actual = results[region][round] || [];
+    let matchups;
+    if (round === 'R64') {
+      matchups = struct.map(m => {
+        const seeds = m.seeds.split('/').map(Number);
+        return { teams: m.teams, seeds, winner: actual.length > 0 ? actual[struct.indexOf(m)] : null };
+      });
+    } else {
+      const prevRound = round === 'R32' ? 'R64' : round === 'S16' ? 'R32' : 'S16';
+      const prev = results[region][prevRound] || [];
+      matchups = [];
+      for (let i = 0; i < prev.length; i += 2) {
+        if (prev[i] && prev[i+1]) {
+          matchups.push({ teams: [prev[i], prev[i+1]], seeds: null, winner: actual[matchups.length] || null });
+        }
+      }
+    }
+    roundData[round] = matchups;
+  }
+  return roundData;
+}
+
+function getPlayerPickForGame(player, region, round, gameIndex) {
+  if (!player) return null;
+  const picks = BRACKET_DATA.picks[player];
+  if (!picks || !picks[region] || !picks[region][round]) return null;
+  return picks[region][round][gameIndex] || null;
+}
+
+function renderBracketSlot(team, seed, isWinner, isEliminated, region, round, gameIndex, seedMap) {
+  const players = ['Mom','Max','Simon','Dad'];
+  const initials = { Mom: 'M', Max: 'MX', Simon: 'S', Dad: 'D' };
+  const actual = (results[region] && results[region][round]) ? results[region][round][gameIndex] : null;
+
+  let dotsHtml = '';
+  if (team && actual) {
+    // Show who picked this team as the winner
+    const showPlayers = bracketPlayer ? [bracketPlayer] : players;
+    showPlayers.forEach(p => {
+      const pick = getPlayerPickForGame(p, region, round, gameIndex);
+      if (pick === team) {
+        const cls = actual === team ? 'picked-correct' : 'picked-wrong';
+        dotsHtml += `<span class="pick-dot ${cls}" title="${p}">${initials[p]}</span>`;
+      }
+    });
+  } else if (team && !actual) {
+    // Pending — show who picked this team
+    const showPlayers = bracketPlayer ? [bracketPlayer] : players;
+    showPlayers.forEach(p => {
+      const pick = getPlayerPickForGame(p, region, round, gameIndex);
+      if (pick === team) {
+        dotsHtml += `<span class="pick-dot picked-pending" title="${p}">${initials[p]}</span>`;
+      }
+    });
+  }
+
+  const seedLabel = seed ? `<span class="seed">${seed}</span>` : (team && seedMap[team] ? `<span class="seed">${seedMap[team]}</span>` : '');
+  const cls = isWinner ? 'winner' : isEliminated ? 'eliminated' : '';
+  const teamLabel = team || '<span style="color:#2a4a6b">TBD</span>';
+
+  return `<div class="bracket-slot ${cls}">${seedLabel}<span class="team-name">${teamLabel}</span>${dotsHtml ? `<span class="pick-indicators">${dotsHtml}</span>` : ''}</div>`;
+}
+
+function renderBracket() {
+  const panel = document.getElementById('bracket-panel');
+  const seedMap = getTeamSeedMap();
+  const players = ['Mom','Max','Simon','Dad'];
+
+  let html = '';
+
+  // Region selector
+  html += '<div class="bracket-controls">';
+  html += '<label>Region:</label>';
+  for (const r of ['east','south','west','midwest','final_four']) {
+    const label = r === 'final_four' ? 'Final Four' : r.charAt(0).toUpperCase() + r.slice(1);
+    html += `<button class="region-btn ${bracketRegion === r ? 'active' : ''}" onclick="setBracketRegion('${r}')">${label}</button>`;
+  }
+  html += '<span style="width:24px"></span><label>Highlight:</label>';
+  players.forEach(p => {
+    html += `<button class="bracket-player-btn ${bracketPlayer === p ? 'active' : ''}" onclick="setBracketPlayer('${p}')">${p}</button>`;
+  });
+  html += '</div>';
+
+  if (bracketRegion === 'final_four') {
+    html += renderFinalFourBracket(seedMap);
+  } else {
+    html += renderRegionBracket(bracketRegion, seedMap);
+  }
+
+  panel.innerHTML = html;
+}
+
+function renderRegionBracket(region, seedMap) {
+  const struct = BRACKET_DATA.structure[region];
+  const rounds = ['R64','R32','S16','E8'];
+  const roundLabels = { R64: 'Round of 64', R32: 'Round of 32', S16: 'Sweet 16', E8: 'Elite 8' };
+  const regionData = getRegionBracketData(region);
+
+  let html = '<div class="bracket-wrap"><div class="bracket">';
+
+  rounds.forEach((round, ri) => {
+    const matchups = regionData[round];
+    // Vertical spacing increases each round
+    const gameGap = ri === 0 ? 4 : ri === 1 ? 28 : ri === 2 ? 80 : 180;
+
+    html += `<div class="bracket-round" style="gap:${gameGap}px;">`;
+    html += `<div class="bracket-round-label">${roundLabels[round]}</div>`;
+
+    if (round === 'R64') {
+      struct.forEach((m, i) => {
+        const seeds = m.seeds.split('/').map(Number);
+        const actual = (results[region].R64 || [])[i];
+        const t0Winner = actual === m.teams[0];
+        const t1Winner = actual === m.teams[1];
+        const t0Elim = actual && !t0Winner;
+        const t1Elim = actual && !t1Winner;
+
+        html += `<div class="bracket-game">`;
+        html += renderBracketSlot(m.teams[0], seeds[0], t0Winner, t0Elim, region, 'R64', i, seedMap);
+        html += renderBracketSlot(m.teams[1], seeds[1], t1Winner, t1Elim, region, 'R64', i, seedMap);
+        html += `</div>`;
+      });
+    } else {
+      const prevRound = round === 'R32' ? 'R64' : round === 'S16' ? 'R32' : 'S16';
+      const prev = results[region][prevRound] || [];
+      const actual = results[region][round] || [];
+
+      for (let i = 0; i < prev.length; i += 2) {
+        const t0 = prev[i] || null;
+        const t1 = prev[i + 1] || null;
+        const gi = Math.floor(i / 2);
+        const winner = actual[gi] || null;
+        const t0Winner = winner && winner === t0;
+        const t1Winner = winner && winner === t1;
+        const t0Elim = winner && !t0Winner;
+        const t1Elim = winner && !t1Winner;
+
+        html += `<div class="bracket-game">`;
+        html += renderBracketSlot(t0, null, t0Winner, t0Elim, region, round, gi, seedMap);
+        html += renderBracketSlot(t1, null, t1Winner, t1Elim, region, round, gi, seedMap);
+        html += `</div>`;
+      }
+
+      // Fill empty slots if previous round isn't complete
+      const expectedGames = round === 'R32' ? 4 : round === 'S16' ? 2 : 1;
+      const actualGames = Math.floor(prev.length / 2);
+      for (let i = actualGames; i < expectedGames; i++) {
+        html += `<div class="bracket-game">`;
+        html += renderBracketSlot(null, null, false, false, region, round, i, seedMap);
+        html += renderBracketSlot(null, null, false, false, region, round, i, seedMap);
+        html += `</div>`;
+      }
+    }
+
+    html += `</div>`;
+
+    // Add connector column between rounds (except after last round)
+    if (ri < rounds.length - 1) {
+      html += `<div style="width:16px;"></div>`;
+    }
+  });
+
+  html += '</div></div>';
+  return html;
+}
+
+function renderFinalFourBracket(seedMap) {
+  const regions = ['east','south','west','midwest'];
+  const regionLabels = ['East', 'South', 'West', 'Midwest'];
+  const e8Winners = regions.map(r => (results[r].E8 || [])[0] || null);
+  const players = ['Mom','Max','Simon','Dad'];
+  const initials = { Mom: 'M', Max: 'MX', Simon: 'S', Dad: 'D' };
+
+  function ffPickDots(pickKey, team) {
+    let dots = '';
+    const showPlayers = bracketPlayer ? [bracketPlayer] : players;
+    showPlayers.forEach(p => {
+      const ff = BRACKET_DATA.picks[p].final_four;
+      let pick;
+      if (pickKey === 'semi1') pick = ff.semi1.winner;
+      else if (pickKey === 'semi2') pick = ff.semi2.winner;
+      else pick = ff.championship.winner;
+
+      let actualWinner;
+      if (pickKey === 'semi1') actualWinner = results.final_four.semi1_winner;
+      else if (pickKey === 'semi2') actualWinner = results.final_four.semi2_winner;
+      else actualWinner = results.final_four.champion;
+
+      if (pick === team) {
+        const cls = actualWinner ? (pick === actualWinner ? 'picked-correct' : 'picked-wrong') : 'picked-pending';
+        dots += `<span class="pick-dot ${cls}" title="${p}">${initials[p]}</span>`;
+      }
+    });
+    return dots ? `<span class="pick-indicators">${dots}</span>` : '';
+  }
+
+  const s1w = results.final_four.semi1_winner;
+  const s2w = results.final_four.semi2_winner;
+  const champ = results.final_four.champion;
+
+  let html = '<div class="bracket-wrap"><div class="ff-bracket">';
+
+  // Semi 1 column (East vs South)
+  html += '<div class="ff-round">';
+  html += '<div class="bracket-round-label">Semifinal 1</div>';
+  html += '<div class="bracket-game">';
+  const e0 = e8Winners[0]; const e1 = e8Winners[1];
+  html += `<div class="bracket-slot ${s1w === e0 ? 'winner' : s1w && s1w !== e0 ? 'eliminated' : ''}">`;
+  html += `${e0 ? `<span class="seed">${seedMap[e0] || ''}</span><span class="team-name">${e0}</span>` : '<span class="team-name" style="color:#2a4a6b">East TBD</span>'}`;
+  html += e0 ? ffPickDots('semi1', e0) : '';
+  html += '</div>';
+  html += `<div class="bracket-slot ${s1w === e1 ? 'winner' : s1w && s1w !== e1 ? 'eliminated' : ''}">`;
+  html += `${e1 ? `<span class="seed">${seedMap[e1] || ''}</span><span class="team-name">${e1}</span>` : '<span class="team-name" style="color:#2a4a6b">South TBD</span>'}`;
+  html += e1 ? ffPickDots('semi1', e1) : '';
+  html += '</div>';
+  html += '</div>';
+
+  // Semi 2 (West vs Midwest)
+  html += '<div style="height:40px"></div>';
+  html += '<div class="bracket-round-label">Semifinal 2</div>';
+  html += '<div class="bracket-game">';
+  const e2 = e8Winners[2]; const e3 = e8Winners[3];
+  html += `<div class="bracket-slot ${s2w === e2 ? 'winner' : s2w && s2w !== e2 ? 'eliminated' : ''}">`;
+  html += `${e2 ? `<span class="seed">${seedMap[e2] || ''}</span><span class="team-name">${e2}</span>` : '<span class="team-name" style="color:#2a4a6b">West TBD</span>'}`;
+  html += e2 ? ffPickDots('semi2', e2) : '';
+  html += '</div>';
+  html += `<div class="bracket-slot ${s2w === e3 ? 'winner' : s2w && s2w !== e3 ? 'eliminated' : ''}">`;
+  html += `${e3 ? `<span class="seed">${seedMap[e3] || ''}</span><span class="team-name">${e3}</span>` : '<span class="team-name" style="color:#2a4a6b">Midwest TBD</span>'}`;
+  html += e3 ? ffPickDots('semi2', e3) : '';
+  html += '</div>';
+  html += '</div>';
+  html += '</div>';
+
+  // Spacer
+  html += '<div style="width:24px"></div>';
+
+  // Championship column
+  html += '<div class="ff-champion">';
+  html += '<div class="trophy">🏆</div>';
+  html += '<div class="bracket-round-label">Championship</div>';
+  html += '<div class="bracket-game">';
+  if (s1w || s2w) {
+    if (s1w) {
+      html += `<div class="bracket-slot ${champ === s1w ? 'winner' : champ && champ !== s1w ? 'eliminated' : ''}">`;
+      html += `<span class="seed">${seedMap[s1w] || ''}</span><span class="team-name">${s1w}</span>${ffPickDots('champ', s1w)}`;
+      html += '</div>';
+    } else {
+      html += `<div class="bracket-slot"><span class="team-name" style="color:#2a4a6b">Semi 1 TBD</span></div>`;
+    }
+    if (s2w) {
+      html += `<div class="bracket-slot ${champ === s2w ? 'winner' : champ && champ !== s2w ? 'eliminated' : ''}">`;
+      html += `<span class="seed">${seedMap[s2w] || ''}</span><span class="team-name">${s2w}</span>${ffPickDots('champ', s2w)}`;
+      html += '</div>';
+    } else {
+      html += `<div class="bracket-slot"><span class="team-name" style="color:#2a4a6b">Semi 2 TBD</span></div>`;
+    }
+  } else {
+    html += `<div class="bracket-slot"><span class="team-name" style="color:#2a4a6b">TBD</span></div>`;
+    html += `<div class="bracket-slot"><span class="team-name" style="color:#2a4a6b">TBD</span></div>`;
+  }
+  html += '</div>';
+
+  if (champ) {
+    html += `<div style="margin-top:12px;text-align:center;font-size:18px;font-weight:800;color:#facc15;">🎉 ${champ} 🎉</div>`;
+  }
+
+  html += '</div>';
+  html += '</div></div>';
+  return html;
+}
+
 function getTeamSeedMap() {
   const map = {};
   for (const region of ['east','south','west','midwest']) {
@@ -792,6 +1127,7 @@ function showTab(tab) {
 
 // Initial render
 renderLeaderboard();
+renderBracket();
 renderResults();
 renderPicks();
 </script>
