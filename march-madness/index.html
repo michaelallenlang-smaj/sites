@@ -663,11 +663,32 @@ function importResults() {
   input.click();
 }
 
+function getTeamSeedMap() {
+  const map = {};
+  for (const region of ['east','south','west','midwest']) {
+    for (const m of BRACKET_DATA.structure[region]) {
+      const seeds = m.seeds.split('/');
+      m.teams.forEach((team, i) => {
+        // Handle play-in teams like "NC State/Texas" or "Howard/UMBC"
+        team.split('/').forEach(t => { map[t.trim()] = parseInt(seeds[i]); });
+      });
+    }
+  }
+  return map;
+}
+
+function teamWithSeed(team, seedMap) {
+  const seed = seedMap[team];
+  return seed ? `${team} (${seed})` : team;
+}
+
 function renderPicks() {
   const panel = document.getElementById('picks-panel');
   const players = ['Mom','Max','Simon','Dad'];
   const regions = ['east','south','west','midwest'];
   const rounds = ['R64','R32','S16','E8'];
+
+  const seedMap = getTeamSeedMap();
 
   let html = '<div class="results-section"><h2>All Picks Comparison</h2>';
 
@@ -706,16 +727,17 @@ function renderPicks() {
 
           if (p === players[0]) {
             // Only render row once
-            const matchLabel = matchupTeams[i] ? matchupTeams[i].join(' vs ') : `Game ${i+1}`;
+            const matchLabel = matchupTeams[i] ? matchupTeams[i].map(t => teamWithSeed(t, seedMap)).join(' vs ') : `Game ${i+1}`;
             html += `<tr><td>${round} (${pts}pt)</td><td style="font-size:12px">${matchLabel}</td>`;
             players.forEach(pl => {
               const plPick = (BRACKET_DATA.picks[pl][region][round] || [])[i] || '-';
               const plCorrect = actualWinner && plPick === actualWinner;
               const plWrong = actualWinner && plPick !== actualWinner;
               const plCls = plCorrect ? 'correct' : plWrong ? 'incorrect' : 'pending';
-              html += `<td class="${plCls}">${plPick}${plCorrect ? ' ✓' : plWrong ? ' ✗' : ''}</td>`;
+              const plLabel = plPick === '-' ? '-' : teamWithSeed(plPick, seedMap);
+              html += `<td class="${plCls}">${plLabel}${plCorrect ? ' ✓' : plWrong ? ' ✗' : ''}</td>`;
             });
-            html += `<td style="color:#facc15;font-weight:600">${actualWinner || '—'}</td></tr>`;
+            html += `<td style="color:#facc15;font-weight:600">${actualWinner ? teamWithSeed(actualWinner, seedMap) : '—'}</td></tr>`;
           }
         });
       });
@@ -752,9 +774,9 @@ function renderPicks() {
       const isCorrect = actualWinner && pick === actualWinner;
       const isWrong = actualWinner && pick !== actualWinner;
       const cls = isCorrect ? 'correct' : isWrong ? 'incorrect' : 'pending';
-      html += `<td class="${cls}">${pick}${isCorrect ? ' ✓' : isWrong ? ' ✗' : ''}</td>`;
+      html += `<td class="${cls}">${teamWithSeed(pick, seedMap)}${isCorrect ? ' ✓' : isWrong ? ' ✗' : ''}</td>`;
     });
-    html += `<td style="color:#facc15;font-weight:600">${actualWinner || '—'}</td></tr>`;
+    html += `<td style="color:#facc15;font-weight:600">${actualWinner ? teamWithSeed(actualWinner, seedMap) : '—'}</td></tr>`;
   });
 
   html += '</tbody></table></div></div>';
