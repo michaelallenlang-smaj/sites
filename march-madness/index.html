@@ -174,7 +174,9 @@ const BRACKET_DATA = {
   }
 };
 
-// Pre-loaded R64 results from actual tournament (March 19-20, 2026)
+// Pre-loaded results from actual tournament
+// Bump this version whenever DEFAULT_RESULTS is updated so stale localStorage gets replaced
+const RESULTS_VERSION = 2;
 const DEFAULT_RESULTS = {
   east: {
     R64: ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
@@ -195,14 +197,23 @@ const DEFAULT_RESULTS = {
   final_four: { semi1_winner: null, semi2_winner: null, champion: null }
 };
 
-// Load from localStorage, falling back to pre-loaded results
-let results = JSON.parse(localStorage.getItem('bracket_results_2026') || 'null') || JSON.parse(JSON.stringify(DEFAULT_RESULTS));
+// Load from localStorage, but replace with defaults if version is outdated
+const savedVersion = parseInt(localStorage.getItem('bracket_results_version') || '0');
+let results;
+if (savedVersion < RESULTS_VERSION) {
+  results = JSON.parse(JSON.stringify(DEFAULT_RESULTS));
+  localStorage.setItem('bracket_results_2026', JSON.stringify(results));
+  localStorage.setItem('bracket_results_version', String(RESULTS_VERSION));
+} else {
+  results = JSON.parse(localStorage.getItem('bracket_results_2026') || 'null') || JSON.parse(JSON.stringify(DEFAULT_RESULTS));
+}
 
 let currentRegion = 'east';
 let currentRound = 'R64';
 
 function saveResults() {
   localStorage.setItem('bracket_results_2026', JSON.stringify(results));
+  localStorage.setItem('bracket_results_version', String(RESULTS_VERSION));
 }
 
 function getMatchupsForRound(region, round) {
