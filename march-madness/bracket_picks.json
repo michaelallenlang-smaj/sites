@@ -179,17 +179,21 @@
   },
   "actual_results": {
     "east": {
-      "R64": ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"]
+      "R64": ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
+      "R32": ["Duke", "St. John's", "Michigan St", "UConn"]
     },
     "south": {
-      "R64": ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"]
+      "R64": ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
+      "R32": ["Iowa", "Nebraska", "Illinois", "Houston"]
     },
     "west": {
-      "R64": ["Arizona", "Utah St", "High Point", "Arkansas", "Texas", "Gonzaga", "Miami", "Purdue"]
+      "R64": ["Arizona", "Utah St", "High Point", "Arkansas", "Texas", "Gonzaga", "Miami", "Purdue"],
+      "R32": ["Arizona", "Arkansas", "Texas", "Purdue"]
     },
     "midwest": {
-      "R64": ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"]
+      "R64": ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
+      "R32": ["Michigan", "Alabama", "Tennessee", "Iowa St"]
     },
-    "notes": "R64 complete. R32 games March 21-22. Only 4 double-digit seeds won: High Point(12), VCU(11), Texas(11), Texas A&M(10). Play-in: Howard over UMBC, PVAMU over Lehigh, Texas over NC State, MIA OH over SMU."
+    "notes": "R64 and R32 complete. Sweet 16 begins March 26-27. Notable R32 upsets: #9 Iowa over #1 Florida (73-72), #5 St. John's over #4 Kansas (67-65 buzzer-beater), #11 Texas over #3 Gonzaga. Big Ten has 6 teams in Sweet 16 (Michigan, Michigan St, Iowa, Purdue, Illinois, Nebraska). Play-in: Howard over UMBC, PVAMU over Lehigh, Texas over NC State, MIA OH over SMU."
   }
 }

@@ -178,19 +178,19 @@ const BRACKET_DATA = {
 const DEFAULT_RESULTS = {
   east: {
     R64: ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
-    R32: [], S16: [], E8: []
+    R32: ["Duke", "St. John's", "Michigan St", "UConn"], S16: [], E8: []
   },
   south: {
     R64: ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
-    R32: [], S16: [], E8: []
+    R32: ["Iowa", "Nebraska", "Illinois", "Houston"], S16: [], E8: []
   },
   west: {
     R64: ["Arizona", "Utah St", "High Point", "Arkansas", "Texas", "Gonzaga", "Miami", "Purdue"],
-    R32: [], S16: [], E8: []
+    R32: ["Arizona", "Arkansas", "Texas", "Purdue"], S16: [], E8: []
   },
   midwest: {
     R64: ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
-    R32: [], S16: [], E8: []
+    R32: ["Michigan", "Alabama", "Tennessee", "Iowa St"], S16: [], E8: []
   },
   final_four: { semi1_winner: null, semi2_winner: null, champion: null }
 };
@@ -500,7 +500,7 @@ function resetToDefault() {
   renderResults();
   renderLeaderboard();
   renderPicks();
-  document.getElementById('status-msg').textContent = 'Reset to latest known tournament results (R64 complete).';
+  document.getElementById('status-msg').textContent = 'Reset to latest known tournament results (R64 + R32 complete).';
 }
 
 function clearResults() {
