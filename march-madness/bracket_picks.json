@@ -184,16 +184,18 @@
     },
     "south": {
       "R64": ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
-      "R32": ["Iowa", "Nebraska", "Illinois", "Houston"]
+      "R32": ["Iowa", "Nebraska", "Illinois", "Houston"],
+      "S16": ["Iowa", "Illinois"]
     },
     "west": {
       "R64": ["Arizona", "Utah St", "High Point", "Arkansas", "Texas", "Gonzaga", "Miami", "Purdue"],
-      "R32": ["Arizona", "Arkansas", "Texas", "Purdue"]
+      "R32": ["Arizona", "Arkansas", "Texas", "Purdue"],
+      "S16": ["Arizona", "Purdue"]
     },
     "midwest": {
       "R64": ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
       "R32": ["Michigan", "Alabama", "Tennessee", "Iowa St"]
     },
-    "notes": "R64 and R32 complete. Sweet 16 begins March 26-27. Notable R32 upsets: #9 Iowa over #1 Florida (73-72), #5 St. John's over #4 Kansas (67-65 buzzer-beater), #11 Texas over #3 Gonzaga. Big Ten has 6 teams in Sweet 16 (Michigan, Michigan St, Iowa, Purdue, Illinois, Nebraska). Play-in: Howard over UMBC, PVAMU over Lehigh, Texas over NC State, MIA OH over SMU."
+    "notes": "R64, R32, and South/West S16 complete. East/Midwest S16 games March 27 (tonight). S16 results: Iowa over Nebraska, Illinois over Houston (South); Arizona over Arkansas 109-88, Purdue over Texas (West). East/Midwest games tonight: Duke vs St. John's, UConn vs Michigan St, Michigan vs Alabama, Tennessee vs Iowa St."
   }
 }

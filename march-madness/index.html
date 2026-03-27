@@ -230,7 +230,7 @@ const BRACKET_DATA = {
 
 // Pre-loaded results from actual tournament
 // Bump this version whenever DEFAULT_RESULTS is updated so stale localStorage gets replaced
-const RESULTS_VERSION = 2;
+const RESULTS_VERSION = 3;
 const DEFAULT_RESULTS = {
   east: {
     R64: ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
@@ -238,11 +238,11 @@ const DEFAULT_RESULTS = {
   },
   south: {
     R64: ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
-    R32: ["Iowa", "Nebraska", "Illinois", "Houston"], S16: [], E8: []
+    R32: ["Iowa", "Nebraska", "Illinois", "Houston"], S16: ["Iowa", "Illinois"], E8: []
   },
   west: {
     R64: ["Arizona", "Utah St", "High Point", "Arkansas", "Texas", "Gonzaga", "Miami", "Purdue"],
-    R32: ["Arizona", "Arkansas", "Texas", "Purdue"], S16: [], E8: []
+    R32: ["Arizona", "Arkansas", "Texas", "Purdue"], S16: ["Arizona", "Purdue"], E8: []
   },
   midwest: {
     R64: ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
