@@ -88,6 +88,17 @@
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
+  /* Narrative Update */
+  .update-card { background: linear-gradient(135deg, #1a2e10, #0f1f0a); border: 1px solid #22c55e40; border-left: 4px solid #22c55e; border-radius: 10px; padding: 20px 24px; margin-bottom: 24px; }
+  .update-card .update-date { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #4ade80; margin-bottom: 8px; }
+  .update-card .update-title { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+  .update-card .update-body { font-size: 13px; color: #94a3b8; line-height: 1.8; }
+  .update-card .update-body strong { color: #e0e6ed; }
+  .update-card .update-body .highlight { color: #f97316; font-weight: 700; }
+  .update-card .update-body .upset { color: #facc15; font-weight: 700; }
+  .update-card .update-tonight { margin-top: 14px; padding-top: 14px; border-top: 1px solid #22c55e20; font-size: 12px; color: #64748b; }
+  .update-card .update-tonight strong { color: #94a3b8; }
+
   /* Bracket View */
   .bracket-controls { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
   .bracket-controls label { font-size: 13px; color: #94a3b8; font-weight: 600; margin-right: 4px; }
@@ -368,6 +379,41 @@ function getTotalGamesEntered() {
   return count;
 }
 
+const NARRATIVE = {
+  date: "March 27, 2026",
+  title: "Dad Surges Into the Lead — Iowa's Cinderella Run Continues",
+  body: `
+    <strong>Dad</strong> has overtaken <strong>Simon</strong> at the top with <span class="highlight">52 points</span>,
+    after Thursday's Sweet 16 games rewarded his West picks while Simon's went cold.
+    Simon stays close at <span class="highlight">49 pts</span> — still very much in it.
+    <br><br>
+    <strong>Thursday's big story:</strong> <span class="upset">#9 Iowa</span> just keeps winning.
+    They knocked out #1 Florida in the Round of 32, and now they've eliminated #4 Nebraska in the Sweet 16 —
+    a team <em>everyone</em> had going deep. Nobody in the family picked Iowa to win that game.
+    Meanwhile, <strong>Illinois</strong> cruised past Houston 65-55, another result that hurt all four brackets.
+    <br><br>
+    In the West, <strong>Arizona</strong> blew out Arkansas 109-88, which helped Mom, Max, and Dad (all had Arizona).
+    Simon had both Arkansas and Gonzaga going deep in the West — both are gone, leaving him with
+    <strong>zero Sweet 16 points so far</strong>. That's how Dad slipped past him.
+    <br><br>
+    <strong>Max</strong> (44 pts) and <strong>Mom</strong> (30 pts) round out the leaderboard.
+    Mom's bracket has taken some tough hits — Idaho, NC State, Tennessee St — but she's still alive for tonight's games.
+  `,
+  tonight: `🏀 <strong>Tonight (East & Midwest):</strong> Duke vs St. John's · UConn vs Michigan St · Michigan vs Alabama · Tennessee vs Iowa St —
+    The UConn/Michigan St game splits the family: Mom &amp; Dad have UConn, Max &amp; Simon have Michigan St.
+    Simon and Dad both have Iowa St — a win there could shake up the standings.`
+};
+
+function getNarrativeHtml() {
+  return `
+    <div class="update-card">
+      <div class="update-date">📅 Latest Update — ${NARRATIVE.date}</div>
+      <div class="update-title">${NARRATIVE.title}</div>
+      <div class="update-body">${NARRATIVE.body}</div>
+      ${NARRATIVE.tonight ? `<div class="update-tonight">${NARRATIVE.tonight}</div>` : ''}
+    </div>`;
+}
+
 function getAliveTeams() {
   // Returns the set of teams still alive in the tournament
   const alive = new Set();
@@ -450,7 +496,8 @@ function renderLeaderboard() {
   const maxGames = 63;
   const rankLabels = ['1st','2nd','3rd','4th'];
 
-  let html = `<div style="margin-bottom:16px;color:#94a3b8;font-size:13px;">Games decided: <strong style="color:#f97316">${totalGames}</strong> / ${maxGames}</div>`;
+  let html = getNarrativeHtml();
+  html += `<div style="margin-bottom:16px;color:#94a3b8;font-size:13px;">Games decided: <strong style="color:#f97316">${totalGames}</strong> / ${maxGames}</div>`;
   html += '<div class="leaderboard">';
 
   scores.forEach((s, i) => {
