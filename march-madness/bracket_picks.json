@@ -180,7 +180,8 @@
   "actual_results": {
     "east": {
       "R64": ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
-      "R32": ["Duke", "St. John's", "Michigan St", "UConn"]
+      "R32": ["Duke", "St. John's", "Michigan St", "UConn"],
+      "S16": ["Duke", "UConn"]
     },
     "south": {
       "R64": ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
@@ -194,8 +195,9 @@
     },
     "midwest": {
       "R64": ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
-      "R32": ["Michigan", "Alabama", "Tennessee", "Iowa St"]
+      "R32": ["Michigan", "Alabama", "Tennessee", "Iowa St"],
+      "S16": ["Michigan", "Tennessee"]
     },
-    "notes": "R64, R32, and South/West S16 complete. East/Midwest S16 games March 27 (tonight). S16 results: Iowa over Nebraska, Illinois over Houston (South); Arizona over Arkansas 109-88, Purdue over Texas (West). East/Midwest games tonight: Duke vs St. John's, UConn vs Michigan St, Michigan vs Alabama, Tennessee vs Iowa St."
+    "notes": "All S16 complete. E8 Saturday March 28: Illinois vs Iowa (South), Arizona vs Purdue (West). E8 Sunday March 29: Duke vs UConn (East), Michigan vs Tennessee (Midwest). S16 results: Duke over St. John's 80-75, UConn over Michigan St 67-63 (East); Michigan over Alabama 90-77, Tennessee over Iowa St 76-62 (Midwest)."
   }
 }
