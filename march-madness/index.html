@@ -241,7 +241,7 @@ const BRACKET_DATA = {
 
 // Pre-loaded results from actual tournament
 // Bump this version whenever DEFAULT_RESULTS is updated so stale localStorage gets replaced
-const RESULTS_VERSION = 4;
+const RESULTS_VERSION = 5;
 const DEFAULT_RESULTS = {
   east: {
     R64: ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
@@ -249,11 +249,11 @@ const DEFAULT_RESULTS = {
   },
   south: {
     R64: ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
-    R32: ["Iowa", "Nebraska", "Illinois", "Houston"], S16: ["Iowa", "Illinois"], E8: []
+    R32: ["Iowa", "Nebraska", "Illinois", "Houston"], S16: ["Iowa", "Illinois"], E8: ["Illinois"]
   },
   west: {
     R64: ["Arizona", "Utah St", "High Point", "Arkansas", "Texas", "Gonzaga", "Miami", "Purdue"],
-    R32: ["Arizona", "Arkansas", "Texas", "Purdue"], S16: ["Arizona", "Purdue"], E8: []
+    R32: ["Arizona", "Arkansas", "Texas", "Purdue"], S16: ["Arizona", "Purdue"], E8: ["Arizona"]
   },
   midwest: {
     R64: ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
@@ -380,32 +380,27 @@ function getTotalGamesEntered() {
 }
 
 const NARRATIVE = {
-  date: "March 28, 2026",
-  title: "Dad Running Away With It — Sweet 16 Complete, Elite Eight Starts Tonight",
+  date: "March 29, 2026",
+  title: "Dad Dominates, Max Sneaks Past Simon — Final Four Almost Set",
   body: `
-    <strong>Dad</strong> is pulling away with <span class="highlight">64 points</span> after a big Friday night.
-    He nailed both East Sweet 16 picks — Duke <em>and</em> UConn — while Simon and Max only got Duke.
-    <strong>Simon</strong> sits second at <span class="highlight">57 pts</span>, <strong>Max</strong> third at
-    <span class="highlight">52 pts</span>, and <strong>Mom</strong> fourth at <span class="highlight">42 pts</span>.
+    <strong>Dad</strong> is in firm control at <span class="highlight">72 points</span> after Arizona's
+    dominant 79-64 win over Purdue on Saturday — he and Max both had Arizona in the Elite Eight, picking up
+    8 points each. <strong>Max</strong> jumps past Simon into 2nd place at <span class="highlight">60 pts</span>,
+    with <strong>Simon</strong> at <span class="highlight">57 pts</span> and <strong>Mom</strong> at
+    <span class="highlight">42 pts</span>.
     <br><br>
-    Mom had a strong Friday too — she also called Duke and UConn correctly in the East, picking up 8 points
-    and climbing back into contention. The gap between 2nd and 4th is only 15 points with Elite Eight and
-    Final Four still to come.
+    <strong>Saturday's results:</strong> <strong>Arizona</strong> cruised past Purdue 79-64, snapping a
+    25-year Final Four drought. <strong>Illinois</strong> handled Iowa's Cinderella run once and for all,
+    winning 71-59 — but since nobody had either team in their E8 picks, the South was a wash for all four brackets.
+    Iowa's improbable run — upsetting #1 Florida, #4 Nebraska, and pushing deep into March — ends here.
     <br><br>
-    <strong>Friday's results:</strong> <strong>Duke</strong> held off a feisty St. John's squad 80-75, and
-    <strong>UConn</strong> edged Michigan State 67-63 in a thriller — bad news for Simon and Max who both had
-    Michigan State. In the Midwest, <strong>Michigan</strong> rolled Alabama 90-77 (everyone got that one),
-    but <span class="upset">#6 Tennessee</span> routed #2 Iowa State 76-62, eliminating a team Simon and Dad
-    were counting on deep into the bracket.
-    <br><br>
-    <strong>The Elite Eight is now set:</strong> Duke vs UConn (East), Iowa vs Illinois (South),
-    Arizona vs Purdue (West), Michigan vs Tennessee (Midwest). Nobody has any South E8 picks still alive —
-    Florida, Nebraska, Houston, and Arkansas are all long gone. The remaining points are up for grabs elsewhere.
+    <strong>Final Four so far:</strong> Arizona ✅ and Illinois ✅ are in. Two spots remain — decided today
+    with Duke vs UConn and Michigan vs Tennessee.
   `,
-  tonight: `🏀 <strong>Tonight (E8 Sat):</strong> Illinois vs Iowa · Arizona vs Purdue —
-    If Arizona wins, Max and Dad both pick up 8 pts. Nobody has E8 picks alive in the South regardless of winner.
-    <strong>Tomorrow (E8 Sun):</strong> Duke vs UConn · Michigan vs Tennessee —
-    Max and Dad have Duke (E8); Mom has UConn. Max, Simon, and Dad all have Michigan; nobody has Tennessee.`
+  tonight: `🏀 <strong>Today (E8 Sun):</strong> Duke vs UConn · Michigan vs Tennessee —
+    Max &amp; Dad have Duke; Mom has UConn; Simon gets nothing in the East (had Michigan St).
+    Max, Simon, &amp; Dad all have Michigan (+8 each if Michigan wins); if Tennessee pulls the upset, nobody scores.
+    A Michigan win today keeps all three in the hunt for F4 points.`
 };
 
 function getNarrativeHtml() {

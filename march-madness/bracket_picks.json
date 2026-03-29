@@ -186,18 +186,20 @@
     "south": {
       "R64": ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
       "R32": ["Iowa", "Nebraska", "Illinois", "Houston"],
-      "S16": ["Iowa", "Illinois"]
+      "S16": ["Iowa", "Illinois"],
+      "E8": ["Illinois"]
     },
     "west": {
       "R64": ["Arizona", "Utah St", "High Point", "Arkansas", "Texas", "Gonzaga", "Miami", "Purdue"],
       "R32": ["Arizona", "Arkansas", "Texas", "Purdue"],
-      "S16": ["Arizona", "Purdue"]
+      "S16": ["Arizona", "Purdue"],
+      "E8": ["Arizona"]
     },
     "midwest": {
       "R64": ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
       "R32": ["Michigan", "Alabama", "Tennessee", "Iowa St"],
       "S16": ["Michigan", "Tennessee"]
     },
-    "notes": "All S16 complete. E8 Saturday March 28: Illinois vs Iowa (South), Arizona vs Purdue (West). E8 Sunday March 29: Duke vs UConn (East), Michigan vs Tennessee (Midwest). S16 results: Duke over St. John's 80-75, UConn over Michigan St 67-63 (East); Michigan over Alabama 90-77, Tennessee over Iowa St 76-62 (Midwest)."
+    "notes": "South and West E8 complete. Illinois over Iowa 71-59 (South); Arizona over Purdue 79-64 (West). Final Four: Illinois and Arizona confirmed. East E8 (Duke vs UConn) and Midwest E8 (Michigan vs Tennessee) today March 29."
   }
 }
