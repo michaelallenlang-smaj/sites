@@ -241,11 +241,11 @@ const BRACKET_DATA = {
 
 // Pre-loaded results from actual tournament
 // Bump this version whenever DEFAULT_RESULTS is updated so stale localStorage gets replaced
-const RESULTS_VERSION = 5;
+const RESULTS_VERSION = 6;
 const DEFAULT_RESULTS = {
   east: {
     R64: ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
-    R32: ["Duke", "St. John's", "Michigan St", "UConn"], S16: ["Duke", "UConn"], E8: []
+    R32: ["Duke", "St. John's", "Michigan St", "UConn"], S16: ["Duke", "UConn"], E8: ["UConn"]
   },
   south: {
     R64: ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
@@ -257,7 +257,7 @@ const DEFAULT_RESULTS = {
   },
   midwest: {
     R64: ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
-    R32: ["Michigan", "Alabama", "Tennessee", "Iowa St"], S16: ["Michigan", "Tennessee"], E8: []
+    R32: ["Michigan", "Alabama", "Tennessee", "Iowa St"], S16: ["Michigan", "Tennessee"], E8: ["Michigan"]
   },
   final_four: { semi1_winner: null, semi2_winner: null, champion: null }
 };
@@ -381,26 +381,30 @@ function getTotalGamesEntered() {
 
 const NARRATIVE = {
   date: "March 29, 2026",
-  title: "Dad Dominates, Max Sneaks Past Simon — Final Four Almost Set",
+  title: "UConn's Buzzer-Beater Blows Up Dad's Bracket — Simon Is Back In It",
   body: `
-    <strong>Dad</strong> is in firm control at <span class="highlight">72 points</span> after Arizona's
-    dominant 79-64 win over Purdue on Saturday — he and Max both had Arizona in the Elite Eight, picking up
-    8 points each. <strong>Max</strong> jumps past Simon into 2nd place at <span class="highlight">60 pts</span>,
-    with <strong>Simon</strong> at <span class="highlight">57 pts</span> and <strong>Mom</strong> at
-    <span class="highlight">42 pts</span>.
+    <strong>Dad</strong> still leads at <span class="highlight">80 pts</span>, but his path to victory just
+    got a lot harder. <strong>UConn</strong> pulled off one of the great upsets of the tournament, stealing a
+    73-72 win over Duke on a last-second 3-pointer after Duke led by 19 — eliminating
+    <em>Dad's championship pick</em>. With Duke gone, Dad has no live picks in the Final Four beyond one
+    possible semifinal. His ceiling is now <strong>96 pts</strong>.
     <br><br>
-    <strong>Saturday's results:</strong> <strong>Arizona</strong> cruised past Purdue 79-64, snapping a
-    25-year Final Four drought. <strong>Illinois</strong> handled Iowa's Cinderella run once and for all,
-    winning 71-59 — but since nobody had either team in their E8 picks, the South was a wash for all four brackets.
-    Iowa's improbable run — upsetting #1 Florida, #4 Nebraska, and pushing deep into March — ends here.
+    Meanwhile <strong>Simon</strong>, who has <strong>Michigan</strong> winning it all, suddenly has a path
+    to 113 points. He's currently at <span class="highlight">65 pts</span> — 15 back — but if Michigan runs
+    the table from here, Simon wins the whole thing. <strong>Max</strong> sits at
+    <span class="highlight">68 pts</span> (max 84 if Arizona wins the semi) and
+    <strong>Mom</strong> is at <span class="highlight">50 pts</span> with no remaining live picks — her bracket
+    is officially done scoring.
     <br><br>
-    <strong>Final Four so far:</strong> Arizona ✅ and Illinois ✅ are in. Two spots remain — decided today
-    with Duke vs UConn and Michigan vs Tennessee.
+    <strong>Michigan</strong> did their part, routing Tennessee 95-62 in the other Sunday game — the largest
+    Elite Eight margin since 1989. All four Final Four teams are set:
+    <strong>UConn vs Illinois</strong> (Semi 1) and <strong>Arizona vs Michigan</strong> (Semi 2).
   `,
-  tonight: `🏀 <strong>Today (E8 Sun):</strong> Duke vs UConn · Michigan vs Tennessee —
-    Max &amp; Dad have Duke; Mom has UConn; Simon gets nothing in the East (had Michigan St).
-    Max, Simon, &amp; Dad all have Michigan (+8 each if Michigan wins); if Tennessee pulls the upset, nobody scores.
-    A Michigan win today keeps all three in the hunt for F4 points.`
+  tonight: `🏀 <strong>Final Four — April 5:</strong> UConn vs Illinois · Arizona vs Michigan —
+    Simon needs Michigan to beat Arizona (+16 semi, then +32 if they win the title).
+    Dad needs Michigan to win the semi (+16) but has no championship pick left.
+    Max needs Arizona to win the semi (+16), no live champ pick.
+    Mom is done — all her picks are eliminated. It's a three-horse race.`
 };
 
 function getNarrativeHtml() {

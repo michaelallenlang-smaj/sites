@@ -181,7 +181,8 @@
     "east": {
       "R64": ["Duke", "TCU", "St. John's", "Kansas", "Louisville", "Michigan St", "UCLA", "UConn"],
       "R32": ["Duke", "St. John's", "Michigan St", "UConn"],
-      "S16": ["Duke", "UConn"]
+      "S16": ["Duke", "UConn"],
+      "E8": ["UConn"]
     },
     "south": {
       "R64": ["Florida", "Iowa", "Vanderbilt", "Nebraska", "VCU", "Illinois", "Texas A&M", "Houston"],
@@ -198,8 +199,9 @@
     "midwest": {
       "R64": ["Michigan", "Saint Louis", "Texas Tech", "Alabama", "Tennessee", "Virginia", "Kentucky", "Iowa St"],
       "R32": ["Michigan", "Alabama", "Tennessee", "Iowa St"],
-      "S16": ["Michigan", "Tennessee"]
+      "S16": ["Michigan", "Tennessee"],
+      "E8": ["Michigan"]
     },
-    "notes": "South and West E8 complete. Illinois over Iowa 71-59 (South); Arizona over Purdue 79-64 (West). Final Four: Illinois and Arizona confirmed. East E8 (Duke vs UConn) and Midwest E8 (Michigan vs Tennessee) today March 29."
+    "notes": "All E8 complete. Final Four: UConn, Illinois, Arizona, Michigan. East: UConn 73-72 Duke (buzzer-beater, Duke blew 19-pt lead). Midwest: Michigan 95-62 Tennessee. F4 April 5: UConn vs Illinois (semi1), Arizona vs Michigan (semi2)."
   }
 }
